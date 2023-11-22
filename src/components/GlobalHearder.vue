@@ -51,24 +51,20 @@
 
 <script setup lang="ts">
 import { routes } from "@/router/routers";
-import { Message } from "@arco-design/web-vue";
 import { computed, ref } from "vue";
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
+import router from "@/router";
+import store from "@/store";
 import checkAccess from "../access/checkAccess";
 
-const router = useRouter();
 // 默认主页
 const selectedKeys = ref(["/"]);
-
-const store = useStore();
 
 const popupVisible = ref(false);
 
 // 隐藏不可见路由
 const visibleRoute = computed(() => {
   return routes.filter((item) => {
-    if (item.meta?.hideInMenu) {
+    if (item.meta?.hideInMenu || item.path.startsWith("/user")) {
       return false;
     }
     // 权限不够
@@ -81,12 +77,12 @@ const visibleRoute = computed(() => {
   });
 });
 
-setTimeout(() => {
-  store.dispatch("user/getLoginUser", {
-    userName: "焦久宁",
-    userRole: "admin",
-  });
-}, 3000);
+// setTimeout(() => {
+//   store.dispatch("user/getLoginUser", {
+//     userName: "焦久宁",
+//     userRole: "admin",
+//   });
+// }, 3000);
 
 // 路由跳转后，更新菜单高亮
 router.afterEach((to) => {
@@ -101,9 +97,6 @@ const doMenuClick = (key: string) => {
 
 const open = () => {
   popupVisible.value = !popupVisible.value;
-  store.dispatch("user/getLoginUser", {
-    userName: "焦久宁",
-  });
 };
 </script>
 

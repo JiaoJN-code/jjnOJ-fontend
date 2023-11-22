@@ -2,12 +2,41 @@ import ACCESS_ENUM from "@/access/accessEnum";
 import { RouteRecordRaw } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import NoAuth from "../views/NoAuth.vue";
+import UserLayout from "../layout/UserLayout.vue";
+import UserLogin from "../views/user/UserLogin.vue";
+import UserRegister from "../views/user/UserRegister.vue";
 
 export const routes: Array<RouteRecordRaw> = [
+  {
+    path: "/user",
+    name: "user",
+    component: UserLayout,
+    children: [
+      {
+        path: "/user/login",
+        name: "登录",
+        component: UserLogin,
+        meta: {
+          access: ACCESS_ENUM.NOT_LOGIN,
+        },
+      },
+      {
+        path: "/user/register",
+        name: "注册",
+        component: UserRegister,
+        meta: {
+          access: ACCESS_ENUM.NOT_LOGIN,
+        },
+      },
+    ],
+  },
   {
     path: "/",
     name: "home",
     component: HomeView,
+    meta: {
+      access: ACCESS_ENUM.NOT_LOGIN,
+    },
   },
   {
     path: "/home",
